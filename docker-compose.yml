@@ -1,0 +1,33 @@
+services:
+  influxdb:
+    image: influxdb:2.0
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=adminpassword
+      - DOCKER_INFLUXDB_INIT_ORG=meuorg
+      - DOCKER_INFLUXDB_INIT_BUCKET=meubucket
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=meutoken
+    volumes:
+      - influxdb-data:/var/lib/influxdb
+    ports:
+      - "8086:8086"
+
+  fastapi_app:
+    build: .
+    container_name: fastapi_app
+    restart: always
+    depends_on:
+      - influxdb
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/TSDB_bd2
+    environment:
+      - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_TOKEN=meutoken
+      - INFLUXDB_ORG=meuorg
+      - INFLUXDB_BUCKET=meubucket
+
+volumes:
+  influxdb-data:
