@@ -1,7 +1,7 @@
 from typing import Optional
 
 from fastapi import FastAPI
-from app.services.sensor_service import inserir_sensor, consultar_sensores
+from app.services.sensor_service import inserir_sensor, consultar_sensores, inserir_multiplos_sensores
 
 app = FastAPI()
 
@@ -16,3 +16,7 @@ def insert_sensor(localizacao: str, temperatura: float, umidade: float, vento: f
 @app.get("/consulta/")
 def get_sensores(query: Optional[str] = None):
     return consultar_sensores(query)
+
+@app.post("/insert-bulk/")
+def insert_bulk():
+    return inserir_multiplos_sensores()

@@ -17,7 +17,7 @@ class InfluxDBConnection:
 
     def write(self, point):
         """Escrever um ponto no bd"""
-        self.write_api.write(bucket=self.bucket,org=self.org ,record=point)
+        self.write_api.write(bucket=self.bucket,org=self.org ,record=point, write_precision='s')
 
     def query(self, query):
         """Executa uma query no bd"""
@@ -26,5 +26,6 @@ class InfluxDBConnection:
     def close(self):
         """Fecha a conexão com o banco"""
         self.client.close()
+
 
 influx_db = InfluxDBConnection()
